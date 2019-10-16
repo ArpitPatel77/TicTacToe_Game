@@ -10,6 +10,11 @@ import UIKit
 
 class Arpit_TableViewCell: UITableViewCell {
 
+    
+    @IBOutlet weak var winLossImage: UIImageView!
+    @IBOutlet weak var whoWinLabel: UILabel!
+    @IBOutlet weak var dateTimeLable: UILabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

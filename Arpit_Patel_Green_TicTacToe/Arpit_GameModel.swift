@@ -55,6 +55,7 @@ class Arpit_GameModel  {
             if (squareContents[index1] == lastPlayed && squareContents[index2] == lastPlayed && squareContents[index3] == lastPlayed ) {
                 //lastPlayer won the game
                 whoWon = lastPlayed
+                saveGame()
                 return true
             }
             
@@ -66,6 +67,20 @@ class Arpit_GameModel  {
     }
     
     func saveGame() {
-        <#function body#>
+        var numberOfGamePlayed = UserDefaults.standard.integer(forKey: Constants.NUM_GAMES)
+        
+        numberOfGamePlayed += 1
+        
+        UserDefaults.standard.set(numberOfGamePlayed, forKey: Constants.NUM_GAMES)
+        
+        UserDefaults.standard.set(whoWon, forKey: Constants.WHO_WON + String(numberOfGamePlayed))
+        
+        let date = Date()
+        
+        UserDefaults.standard.set(date, forKey: Constants.DATE_TIME + String(numberOfGamePlayed))
+        
+        UserDefaults.standard.set(orderOfMoves, forKey: Constants.ORDER_OF_MOVES + String(numberOfGamePlayed))
+        
+        print("Saved Game")
     }
 }

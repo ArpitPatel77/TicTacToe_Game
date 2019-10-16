@@ -9,7 +9,9 @@
 import UIKit
 
 class Arpit_TableViewController: UITableViewController {
-
+    
+    var gameDataArray = [GameData]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -21,15 +23,33 @@ class Arpit_TableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
-
+    func loadData() {
+        let numberOfGamePlayed = UserDefaults.standard.integer(forKey: Constants.NUM_GAMES)
+        
+        for i in (0..<numberOfGamePlayed) {
+            let whoWon = UserDefaults.standard.string(forKey: Constants.WHO_WON + String(i + 1))
+            
+            let dateTime = UserDefaults.standard.object(forKey: Constants.DATE_TIME  + String(i + 1)) as! Date
+            
+            let orderOrMovesPlayed = UserDefaults.standard.array(forKey: Constants.ORDER_OF_MOVES + String(i + 1)) as! [Int]
+            
+            
+            let gameData = GameData(whoWon: whoWon!, dateTime: dateTime, orderOfMoves: orderOrMovesPlayed)
+            
+            gameDataArray.append(gameData)
+            
+        }
+    }
     override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
+        
         return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return 10
+        let numberOfGamePlayed = UserDefaults.standard.integer(forKey: Constants.NUM_GAMES)
+        return numberOfGamePlayed
     }
 
     
@@ -87,4 +107,11 @@ class Arpit_TableViewController: UITableViewController {
     }
     */
 
+}
+
+struct GameData {
+    var whoWon : String
+    var dateTime : Date
+    var orderOfMoves : [Int]
+    
 }
