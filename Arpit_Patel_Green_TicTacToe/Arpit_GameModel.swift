@@ -17,6 +17,8 @@ class Arpit_GameModel  {
     
     var squareContents = Array(repeating: "", count: 10)
     
+    var orderOfMoves = [Int]()
+    
     let winningCombinations = [
         [1,2,3],
         [4,5,6],
@@ -29,6 +31,7 @@ class Arpit_GameModel  {
     ]
     
     func playMove(tag: Int) {
+        orderOfMoves.append(tag)
         squareContents[tag] = WhoseTurn
         
         lastPlayed = WhoseTurn
@@ -43,8 +46,6 @@ class Arpit_GameModel  {
     func isGameFinished() -> Bool {
         if(numberOfMovesPlayed < 5) {
             return false
-        } else if (numberOfMovesPlayed == 9) {
-            return true
         }
         for winningCombo in winningCombinations {
             let index1 = winningCombo[0]
@@ -58,6 +59,13 @@ class Arpit_GameModel  {
             }
             
         }
+        if (numberOfMovesPlayed == 9) {
+            return true
+        }
         return false
+    }
+    
+    func saveGame() {
+        <#function body#>
     }
 }

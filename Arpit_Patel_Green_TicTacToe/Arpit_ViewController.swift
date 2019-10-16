@@ -11,6 +11,8 @@ import UIKit
 class Arpit_ViewController: UIViewController {
     //MARK:- Class Variables
     var theGameModel = Arpit_GameModel()
+    var gameFinished = false
+    
     
     
     //MARK:- Outlets
@@ -29,21 +31,26 @@ class Arpit_ViewController: UIViewController {
         print("button touched")
         print(sender.tag)
         
-        if (sender.currentTitle == "X" || sender.currentTitle == "O") {
+        if (sender.currentTitle == "X" || sender.currentTitle == "O" || gameFinished) {
             //do nothing
         } else {
         sender.setTitle(theGameModel.WhoseTurn, for: .normal);
         theGameModel.playMove(tag: sender.tag)
             
             //check if the game is finished
-            let gameFinished = theGameModel.isGameFinished()
+             gameFinished = theGameModel.isGameFinished()
             
             if (gameFinished) {
                 let whoWon = theGameModel.whoWon
                 
-                gameStateLabel.text = "Game Over"
+                if (whoWon == "") {
+                    gameStateLabel.text = "!Draw"
+                } else {
+                    gameStateLabel.text = whoWon + "'s Won"
+                }
+               
             } else {
-               gameStateLabel.text = theGameModel.WhoseTurn + "'s Turn"
+                gameStateLabel.text = theGameModel.WhoseTurn + "'s Turn"
             }
 
         }
