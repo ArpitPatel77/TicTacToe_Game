@@ -13,6 +13,8 @@ class Arpit_ViewController: UIViewController {
     var theGameModel = Arpit_GameModel()
     var gameFinished = false
     
+    var replayingPastGame = false
+    var pastGameData : GameData?
     
     
     //MARK:- Outlets
@@ -22,6 +24,25 @@ class Arpit_ViewController: UIViewController {
         
         gameStateLabel.text = theGameModel.WhoseTurn + "'s Turn"
         // Do any additional setup after loading the view.
+        
+        if (replayingPastGame) {
+            theGameModel.isPastGame = true
+            navigationItem.title = "Past Game"
+            
+            let pastGameMoves = (pastGameData?.orderOfMoves)!
+            
+            var delay : Double = Double(0)
+            for i in pastGameMoves {
+                delay = delay + 1.0
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + delay, execute:{
+                    let button = self.view.viewWithTag(i)
+                    self.squareTouched(button as! UIButton)
+                })
+            }
+        } else {
+            
+        }
     }
     
     //MARK:- IBActions
@@ -44,7 +65,7 @@ class Arpit_ViewController: UIViewController {
                 let whoWon = theGameModel.whoWon
                 
                 if (whoWon == "") {
-                    gameStateLabel.text = "!Draw"
+                    gameStateLabel.text = " !Draw "
                 } else {
                     gameStateLabel.text = whoWon + "'s Won"
                 }

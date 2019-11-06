@@ -15,6 +15,10 @@ class Arpit_TableViewCell: UITableViewCell {
     @IBOutlet weak var whoWinLabel: UILabel!
     @IBOutlet weak var dateTimeLable: UILabel!
     
+    //MARK:- Class Variables
+    
+    var gameData : GameData?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

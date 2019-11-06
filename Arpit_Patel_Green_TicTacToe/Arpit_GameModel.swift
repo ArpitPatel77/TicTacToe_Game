@@ -12,6 +12,7 @@ class Arpit_GameModel  {
     var WhoseTurn = "X"
     var lastPlayed = ""
     var whoWon = ""
+    var isPastGame = false
     
     var numberOfMovesPlayed = 0
     
@@ -67,14 +68,18 @@ class Arpit_GameModel  {
     }
     
     func saveGame() {
+        
+        if (isPastGame) {
+            return
+        }
+        
         var numberOfGamePlayed = UserDefaults.standard.integer(forKey: Constants.NUM_GAMES)
         
         numberOfGamePlayed += 1
         
         UserDefaults.standard.set(numberOfGamePlayed, forKey: Constants.NUM_GAMES)
         
-        UserDefaults.standard.set(whoWon, forKey: Constants.WHO_WON + String(numberOfGamePlayed))
-        
+            UserDefaults.standard.set(whoWon, forKey: Constants.WHO_WON + String(numberOfGamePlayed))
         let date = Date()
         
         UserDefaults.standard.set(date, forKey: Constants.DATE_TIME + String(numberOfGamePlayed))

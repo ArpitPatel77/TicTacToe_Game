@@ -14,19 +14,29 @@ class Arpit_TableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        loadData()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        loadData()
+        tableView.reloadData()
+    }
 
     // MARK: - Table view data source
     func loadData() {
+        
+        gameDataArray = [GameData]()
         let numberOfGamePlayed = UserDefaults.standard.integer(forKey: Constants.NUM_GAMES)
         
-        for i in (0..<numberOfGamePlayed) {
+        for i in (0..<numberOfGamePlayed).reversed() {
             let whoWon = UserDefaults.standard.string(forKey: Constants.WHO_WON + String(i + 1))
             
             let dateTime = UserDefaults.standard.object(forKey: Constants.DATE_TIME  + String(i + 1)) as! Date
@@ -54,10 +64,32 @@ class Arpit_TableViewController: UITableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "arpit_tablecell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "arpit_tablecell", for: indexPath) as! Arpit_TableViewCell
 
         // Configure the cell...
-
+        let i = indexPath.row
+        
+        let gameData = gameDataArray[i]
+        
+        if (gameData.whoWon == ""){
+            cell.whoWinLabel.text = "Draw!"
+        } else {
+            cell.whoWinLabel.text = gameData.whoWon + "Won!"
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        
+        let formattedDateTime = dateFormatter.string(from: gameData.dateTime)
+        cell.dateTimeLable.text = formattedDateTime
+        
+        if (gameData.whoWon == "X") {
+            cell.winLossImage.image = UIImage(named: "green_win")
+        } else {
+            cell.winLossImage.image = UIImage(named: "green_loss")
+        }
+        
+        cell.gameData = gameData
         return cell
     }
     
@@ -97,15 +129,26 @@ class Arpit_TableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        let identifier = segue.identifier
+        if (identifier == "newGame") {
+            return
+        }
+        
+        let whichCell =  sender as! Arpit_TableViewCell
+        let destinationView = segue.destination as! Arpit_ViewController
+        
+        destinationView.replayingPastGame = true
+        destinationView.pastGameData = whichCell.gameData
     }
-    */
+    
 
 }
 
