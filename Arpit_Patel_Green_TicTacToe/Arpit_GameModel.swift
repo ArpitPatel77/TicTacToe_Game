@@ -62,6 +62,7 @@ class Arpit_GameModel  {
             
         }
         if (numberOfMovesPlayed == 9) {
+            saveGame()
             return true
         }
         return false
